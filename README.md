@@ -41,8 +41,10 @@ Launch the application!
 
 
 ## If you want to add a post or manage comments in the application use the following data to log in
-`login: test@test.com`
-`hasło: Test123*`
+Login:
+`test@test.com`
+Password:
+`Test123*`
 
 
 ## About the Author
