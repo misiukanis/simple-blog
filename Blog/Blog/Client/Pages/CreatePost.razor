@@ -1,0 +1,65 @@
+﻿@page "/create-post"
+@using Blog.Client.HttpClients
+@using Blog.Shared.DTOs
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Blog.Shared
+@using Resources
+@attribute [Authorize]
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+@inject BlogHttpClient BlogHttpClient
+
+
+<PageTitle>Create post</PageTitle>
+
+
+<div class="independent-form">
+    <h2>Create post</h2>
+
+    <EditForm Model="@NewPost" OnValidSubmit="@HandleValidSubmit">
+        <div class="independent-form-errors">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+        </div>
+
+        <div class="editor-label">
+            <label>Title</label>
+        </div>
+        <div class="editor-field">
+            <InputText @bind-Value="NewPost.Title" style="width:400px" />
+        </div>
+
+        <div class="editor-label">
+            <label>Introduction</label>
+        </div>
+        <div class="editor-field">
+            <InputTextArea @bind-Value="NewPost.Introduction" rows="10" cols="70" />
+        </div>
+
+        <div class="editor-label">
+            <label>Content</label>
+        </div>
+        <div class="editor-field">
+            <InputTextArea @bind-Value="NewPost.Content" rows="10" cols="70" />
+        </div>        
+        <br />
+
+        <div class="independent-form-submit">
+            <input type="submit" value="Save" />
+        </div>
+    </EditForm>
+</div>
+
+
+@code {
+    public CreatePostDTO NewPost = new CreatePostDTO();
+
+    private async Task HandleValidSubmit()
+    {
+        var postId = await BlogHttpClient.CreatePostAsync(NewPost);
+
+        ToastService.ShowSuccess(Messages.PostSaved, Messages.Success);
+        NavigationManager.NavigateTo($"edit-post/{postId}");
+    }
+}

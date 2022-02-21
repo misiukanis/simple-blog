@@ -1,0 +1,214 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+
+/* dodane: */
+
+.form-bg {
+    background: #00b4ef;
+}
+
+.form-horizontal {
+    background: #fff;
+    padding-bottom: 40px;
+    border-radius: 15px;    
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.form-horizontal .heading {
+    display: block;
+    font-size: 35px;
+    text-align: center;
+    font-weight: 700;
+    padding: 35px 0;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 30px;
+}
+
+.form-horizontal .form-group {
+    padding: 0 40px;
+    margin: 0 0 25px 0;
+    position: relative;
+}
+
+.form-horizontal .form-control {
+    background: #f0f0f0;
+    border: none;
+    border-radius: 20px;
+    box-shadow: none;
+    padding: 0 20px 0 45px;
+    height: 40px;
+    transition: all 0.3s ease 0s;
+    font-size: 17px;
+}
+
+.form-horizontal .form-group i {
+    position: absolute;
+    top: 12px;
+    left: 60px;
+    font-size: 17px;
+    color: #c8c8c8;
+    transition: all 0.5s ease 0s;
+}
+
+.form-horizontal .form-control:focus + i {
+    color: #00b4ef;
+}
+
+.form-horizontal .main-checkbox {
+    float: left;
+    width: 20px;
+    height: 20px;
+    background: #11a3fc;
+    border-radius: 50%;
+    position: relative;
+    margin: 5px 0 0 5px;
+    border: 1px solid #11a3fc;
+}
+
+.form-horizontal .main-checkbox label {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.form-horizontal .main-checkbox label:after {
+    content: "";
+    width: 10px;
+    height: 5px;
+    position: absolute;
+    top: 5px;
+    left: 4px;
+    border: 3px solid #fff;
+    border-top: none;
+    border-right: none;
+    background: transparent;
+    opacity: 0;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.form-horizontal .main-checkbox input[type=checkbox] {
+    visibility: hidden;
+}
+
+.form-horizontal .main-checkbox input[type=checkbox]:checked + label:after {
+    opacity: 1;
+}
+
+.form-horizontal .text {
+    float: left;
+    margin-left: 7px;
+    line-height: 20px;
+    padding-top: 5px;
+    text-transform: capitalize;
+}
+
+.form-horizontal .btn {
+    float: right;
+    font-size: 14px;
+    color: #fff;
+    background: #00b4ef;
+    border-radius: 30px;
+    padding: 10px 25px;
+    border: none;
+    text-transform: capitalize;
+    transition: all 0.5s ease 0s;
+}
+
+.text-login-form-error-summary {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.text-login-form-error-summary ul {
+    list-style-type: none;
+}
+
+.text-login-form-error {    
+    text-align: left;
+    margin-top: 10px;
+}
+
+@media only screen and (max-width: 479px) {
+    .form-horizontal .form-group {
+        padding: 0 25px;
+    }
+
+    .form-horizontal .form-group i {
+        left: 45px;
+    }
+
+    .form-horizontal .btn {
+        padding: 10px 20px;
+    }
+}
+
+.error-site-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-site-content div {
+    width: 500px;
+    height: 200px;
+    text-align: center;
+}
+
+
+/* new added styles: */
+
+
+.aligncenter {
+    text-align: center;
+}
+
+
+
+
