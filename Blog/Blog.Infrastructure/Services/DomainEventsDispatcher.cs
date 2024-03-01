@@ -4,14 +4,9 @@ using MediatR;
 
 namespace Blog.Infrastructure.Services
 {
-    public class DomainEventsDispatcher : IDomainEventsDispatcher
+    public class DomainEventsDispatcher(IPublisher mediator) : IDomainEventsDispatcher
     {
-        private readonly IPublisher _mediator;
-
-        public DomainEventsDispatcher(IPublisher mediator)
-        {
-            _mediator = mediator;
-        }
+        private readonly IPublisher _mediator = mediator;
 
         public async Task DispatchEventsAsync(IEnumerable<IDomainEvent> domainEvents)
         {

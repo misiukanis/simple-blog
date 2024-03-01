@@ -18,20 +18,18 @@ namespace Blog.Application.Commands.CreateComment
             RuleFor(x => x.Content)
                 .NotEmpty()
                 .MaximumLength(100000)
-                .MustAsync(NotContainsForbiddenWords);
-        }
+                .MustAsync(async (content, cancellation) => 
+                {
+                    var forbiddenWords = await _lookupService.GetForbiddenWordsAsync();
+                    var contentHasForbiddenWords = false;
 
-        private async Task<bool> NotContainsForbiddenWords(string content, CancellationToken cancellationToken)
-        {
-            var forbiddenWords = await _lookupService.GetForbiddenWordsAsync();
-            var contentHasForbiddenWords = false;
+                    if (forbiddenWords.Any(content.Contains))
+                    {
+                        contentHasForbiddenWords = true;
+                    }
 
-            if (forbiddenWords.Any(x => content.Contains(x)))
-            {
-                contentHasForbiddenWords = true;
-            }
-
-            return !contentHasForbiddenWords;
+                    return !contentHasForbiddenWords;
+                });
         }
     }
 }

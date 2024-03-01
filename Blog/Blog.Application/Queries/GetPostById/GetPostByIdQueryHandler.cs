@@ -1,24 +1,16 @@
-﻿using AutoMapper;
-using Blog.Domain.Entities.PostAggregate;
-using Blog.Shared.DTOs;
+﻿using Blog.Shared.DTOs;
+using Blog.Shared.Enums;
 using Dapper;
 using MediatR;
 using System.Data;
 
 namespace Blog.Application.Queries.GetPostById
 {
-    public class GetPostByIdQueryHandler : IRequestHandler<GetPostByIdQuery, PostWithCommentsDTO>
+    public class GetPostByIdQueryHandler(IDbConnection dbConnection) : IRequestHandler<GetPostByIdQuery, PostWithCommentsDTO?>
     {
-        private readonly IDbConnection _dbConnection;
-        private readonly IMapper _mapper;
+        private readonly IDbConnection _dbConnection = dbConnection;
 
-        public GetPostByIdQueryHandler(IDbConnection dbConnection, IMapper mapper)
-        {
-            _dbConnection = dbConnection;
-            _mapper = mapper;
-        }
-
-        public async Task<PostWithCommentsDTO> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)
+        public async Task<PostWithCommentsDTO?> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)
         {
             var sql = @"
                 SELECT 
@@ -44,22 +36,22 @@ namespace Blog.Application.Queries.GetPostById
 	                AND CommentStatusId = @CommentStatusId
                 ORDER BY CreationDate DESC;";
 
-            PostWithCommentsDTO postDTO = null;
+            PostWithCommentsDTO? postWithCommentsDTO = null;
+            
             using (var multi = await _dbConnection.QueryMultipleAsync(sql, 
                 new { 
                     PostId = request.PostId, 
                     CommentStatusId = (int)CommentStatus.Accepted 
                 }))
             {
-                postDTO = multi.Read<PostWithCommentsDTO>().SingleOrDefault();
-                if (postDTO != null)
+                postWithCommentsDTO = multi.Read<PostWithCommentsDTO>().SingleOrDefault();
+                if (postWithCommentsDTO != null)
                 {
-                    postDTO.Comments = multi.Read<PostWithCommentsDTO.CommentDTO>().ToList();
+                    postWithCommentsDTO.Comments = multi.Read<PostWithCommentsDTO.CommentDTO>().ToList();
                 }
             }
 
-            return postDTO;
+            return postWithCommentsDTO;
         }
     }
-
 }

@@ -11,7 +11,7 @@ namespace Blog.Infrastructure.Persistence.Configurations
             builder.ToTable("Posts");
             builder.HasKey(x => x.PostId);
 
-            builder.Property(x => x.PostId).ValueGeneratedNever();            
+            builder.Property(x => x.PostId).ValueGeneratedNever();
 
             builder.HasMany(x => x.Comments).WithOne().HasForeignKey("PostId");
         }

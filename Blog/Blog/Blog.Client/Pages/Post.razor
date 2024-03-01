@@ -1,0 +1,120 @@
+﻿@page "/post/{PostId:guid}"
+@using Blog.Client.HttpClients
+@using Blog.Shared.DTOs
+@using Resources
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+@inject IToastService ToastService
+@inject BlogHttpClient BlogHttpClient
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+<PageTitle>Post</PageTitle>
+
+
+<article class="single-container">
+    <h2 class="blog-subject">@PostWithComments.Title</h2>
+    <br/>
+    <p>@((MarkupString)PostWithComments.Content)</p>
+    <br/>
+    <div class="fleft grey">
+        @PostWithComments.CreationDate.ToShortDateString()
+        &nbsp;&nbsp;
+        (@PostWithComments.Comments.Count() comments)
+    </div>
+    <div class="hidden-links @(isUserAuthenticated ? "visible" : "hidden")">
+        <a class="actionButton" href="/edit-post/@PostWithComments.PostId">Edit</a>
+        <a class="actionButton" href="" @onclick="() => DeletePost(PostWithComments.PostId)">Delete</a>
+    </div>
+</article>
+
+
+<div class="title-comments">Comments</div>
+@foreach (var comment in PostWithComments.Comments)
+{
+    <article class="single-container">
+        @comment.Content
+        <br /><br />
+        <div class="fleft grey">Author: @comment.Author</div>
+        <div class="fright grey">Creation date: @comment.CreationDate.ToShortDateString()</div>
+    </article>
+    <div class="next-comment">&nbsp;</div>
+}
+
+
+<div class="comment-form">
+    <EditForm Model="@NewComment" OnValidSubmit="@HandleValidSubmit"> 
+        <fieldset>
+            <legend>Add comment</legend>
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="editor-label">
+                <label>Author</label>
+            </div>
+            <div class="editor-field">
+                <InputText @bind-Value="NewComment.Author" />
+            </div>
+
+            <div class="editor-label">
+                <label>Content</label>
+            </div>
+            <div class="editor-field">
+                <InputTextArea @bind-Value="NewComment.Content" rows="15" cols="70" />
+            </div>
+            <br />
+
+            <p class="alignright">
+                <input type="submit" value="Save" />
+            </p>
+        </fieldset>
+    </EditForm>
+</div>
+
+
+@code {
+    [Parameter]
+    public Guid PostId { get; set; }
+
+    public PostWithCommentsDTO PostWithComments = new PostWithCommentsDTO();
+    public CreateCommentDTO NewComment = new CreateCommentDTO();
+
+    private bool isUserAuthenticated = false;  
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();  
+        isUserAuthenticated = authState.User.Identity.IsAuthenticated;
+
+        PostWithComments = await BlogHttpClient.GetPostByIdAsync(PostId);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            await BlogHttpClient.CreateCommentAsync(PostId, NewComment);
+
+            NewComment = new CreateCommentDTO();
+            ToastService.ShowSuccess(Messages.CommentSavedButMustBeAcceptedByAdmin);
+        }
+        catch(Exception)
+        {
+            ToastService.ShowError(Messages.CannotAddComment);
+        }
+    }
+
+    private async Task DeletePost(Guid postId)
+    {
+        await BlogHttpClient.DeletePostAsync(postId);
+        ToastService.ShowSuccess(Messages.PostDeleted);
+        NavigationManager.NavigateTo($"/");
+    }
+}
+
+
+
+
+
+

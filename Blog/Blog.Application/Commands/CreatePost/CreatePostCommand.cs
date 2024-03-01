@@ -2,19 +2,15 @@
 
 namespace Blog.Application.Commands.CreatePost
 {
-    public class CreatePostCommand : IRequest
+    public class CreatePostCommand(
+        Guid postId, 
+        string title, 
+        string introduction, 
+        string content) : IRequest
     {
-        public Guid PostId { get; }
-        public string Title { get; }
-        public string Introduction { get; }
-        public string Content { get; }
-
-        public CreatePostCommand(Guid postId, string title, string introduction, string content)
-        {
-            PostId = postId;
-            Title = title;
-            Introduction = introduction;
-            Content = content;
-        }
+        public Guid PostId { get; } = postId;
+        public string Title { get; } = title;
+        public string Introduction { get; } = introduction;
+        public string Content { get; } = content;
     }
 }

@@ -2,17 +2,13 @@
 
 namespace Blog.Application.Commands.SendEmail
 {
-    public class SendEmailCommand : IRequest
+    public class SendEmailCommand(
+        string emailFrom, 
+        string subject, 
+        string message) : IRequest
     {
-        public string EmailFrom { get; }
-        public string Subject { get; }
-        public string Message { get; }
-
-        public SendEmailCommand(string emailFrom, string subject, string message)
-        {
-            EmailFrom = emailFrom;
-            Subject = subject;
-            Message = message;
-        }
+        public string EmailFrom { get; } = emailFrom;
+        public string Subject { get; } = subject;
+        public string Message { get; } = message;
     }
 }

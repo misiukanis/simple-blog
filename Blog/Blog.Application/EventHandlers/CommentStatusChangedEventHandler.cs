@@ -1,18 +1,13 @@
-﻿using Blog.Common.Constants;
-using Blog.Domain.Events;
+﻿using Blog.Domain.Events;
+using Blog.Shared.Constants;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Blog.Application.EventHandlers
 {
-    public class CommentStatusChangedEventHandler : INotificationHandler<CommentStatusChangedEvent>
+    public class CommentStatusChangedEventHandler(ILoggerFactory logger) : INotificationHandler<CommentStatusChangedEvent>
     {
-        private readonly ILogger _logger;
-
-        public CommentStatusChangedEventHandler(ILoggerFactory logger)
-        {
-            _logger = logger.CreateLogger(LoggerConstants.EventsLogger);
-        }
+        private readonly ILogger _logger = logger.CreateLogger(LoggerConstants.EventsLogger);
 
         public Task Handle(CommentStatusChangedEvent notification, CancellationToken cancellationToken)
         {

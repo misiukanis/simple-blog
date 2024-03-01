@@ -3,17 +3,11 @@ using MediatR;
 
 namespace Blog.Application.Commands.ChangeCommentStatus
 {
-    public class ChangeCommentStatusCommand : IRequest
+    public class ChangeCommentStatusCommand(
+        Guid commentId, 
+        CommentStatus commentStatus) : IRequest
     {
-        public Guid PostId { get; }
-        public Guid CommentId { get; }        
-        public CommentStatus CommentStatus { get; }
-
-        public ChangeCommentStatusCommand(Guid postId, Guid commentId, CommentStatus commentStatus)
-        {
-            PostId = postId;
-            CommentId = commentId;            
-            CommentStatus = commentStatus;
-        }
+        public Guid CommentId { get; } = commentId;
+        public CommentStatus CommentStatus { get; } = commentStatus;
     }
 }

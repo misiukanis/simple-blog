@@ -1,21 +1,13 @@
-﻿using AutoMapper;
-using Blog.Shared.DTOs;
+﻿using Blog.Shared.DTOs;
 using Dapper;
 using MediatR;
 using System.Data;
 
-namespace Blog.Application.Queries.GetPaginatedPosts
+namespace Blog.Application.Queries.GetComments
 {
-    public class GetCommentsQueryHandler : IRequestHandler<GetCommentsQuery, IEnumerable<CommentDTO>>
+    public class GetCommentsQueryHandler(IDbConnection dbConnection) : IRequestHandler<GetCommentsQuery, IEnumerable<CommentDTO>>
     {
-        private readonly IDbConnection _dbConnection;
-        private readonly IMapper _mapper;
-
-        public GetCommentsQueryHandler(IDbConnection dbConnection, IMapper mapper)
-        {
-            _dbConnection = dbConnection;
-            _mapper = mapper;
-        }
+        private readonly IDbConnection _dbConnection = dbConnection;
 
         public async Task<IEnumerable<CommentDTO>> Handle(GetCommentsQuery request, CancellationToken cancellationToken)
         {
@@ -28,10 +20,9 @@ namespace Blog.Application.Queries.GetPaginatedPosts
                             CommentStatusId AS CommentStatus,
                             CreationDate
                         FROM Comments
-                        ORDER BY CreationDate desc");
-
+                        ORDER BY CreationDate DESC");
+            
             return commentsDTO;
         }
     }
-
 }

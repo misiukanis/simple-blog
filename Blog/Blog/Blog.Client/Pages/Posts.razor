@@ -1,0 +1,100 @@
+﻿@page "/posts"
+@page "/posts/{SearchTerm}"
+@using Blog.Client.HttpClients
+@using Blog.Client.Shared
+@using Blog.Shared.DTOs
+@using Blog.Shared.Metadata
+@using Blog.Shared.Params
+@using Resources
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+@inject IToastService ToastService
+@inject BlogHttpClient BlogHttpClient
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+
+<PageTitle>Posts</PageTitle>
+
+
+@if (!string.IsNullOrEmpty(SearchTerm))
+{
+    <div class="search-term-container">
+        <div class="search-term-container-child"><strong>Search results:</strong> @SearchTerm</div>
+    </div>
+}
+
+@foreach (var post in BlogPosts)
+{
+    <article class="single-container">
+        <h2 class="blog-subject">@post.Title</h2>
+        <br />
+        <p>@((MarkupString)post.Introduction)</p>
+        <br />
+        <div class="fleft grey">
+            @post.CreationDate.ToShortDateString()
+            &nbsp;&nbsp;
+            (@post.CommentsCount comments)
+        </div>
+        <div class="fright">
+        </div>
+        <div class="more">
+            <a href="/post/@post.PostId">Details</a>
+        </div>
+        <div class="hidden-links @(isUserAuthenticated ? "visible" : "hidden")">
+            <a class="actionButton" href="/edit-post/@post.PostId">Edit</a>
+            <a class="actionButton" href="" @onclick="() => DeletePost(post.PostId)">Delete</a>
+        </div>
+    </article>
+    <br /><br />
+}
+
+<div class="pagination-container">
+    <div class="pagination-container-child">
+        <Pagination MetaData="MetaData" Spread="2" SelectedPage="SelectedPage" />
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public string SearchTerm { get; set; }
+
+    public List<PostDTO> BlogPosts = new List<PostDTO>();
+    public PaginationMetadata MetaData = new PaginationMetadata();
+
+    private PaginationParams paginationParams = new PaginationParams();
+    private bool isUserAuthenticated = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();  
+        isUserAuthenticated = authState.User.Identity.IsAuthenticated;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        paginationParams.Page = 1;
+        await GetPosts();
+    }
+
+    private async Task SelectedPage(int page)
+    {
+        paginationParams.Page = page;
+        await GetPosts();
+    }
+
+    private async Task GetPosts()
+    {
+        var pagingResponse = await BlogHttpClient.GetPaginatedPostsAsync(paginationParams, SearchTerm);
+        BlogPosts = pagingResponse.Items;
+        MetaData = pagingResponse.MetaData;
+    }
+
+    private async Task DeletePost(Guid postId)
+    {
+        await BlogHttpClient.DeletePostAsync(postId);
+        ToastService.ShowSuccess(Messages.PostDeleted);
+        NavigationManager.NavigateTo($"/");
+    }
+}

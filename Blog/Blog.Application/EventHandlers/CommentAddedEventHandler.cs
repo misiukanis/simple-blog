@@ -1,18 +1,13 @@
-﻿using Blog.Common.Constants;
-using Blog.Domain.Events;
+﻿using Blog.Domain.Events;
+using Blog.Shared.Constants;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Blog.Application.EventHandlers
 {
-    public class CommentAddedEventHandler : INotificationHandler<CommentAddedEvent>
+    public class CommentAddedEventHandler(ILoggerFactory logger) : INotificationHandler<CommentAddedEvent>
     {
-        private readonly ILogger _logger;
-
-        public CommentAddedEventHandler(ILoggerFactory logger)
-        {
-            _logger = logger.CreateLogger(LoggerConstants.EventsLogger);
-        }
+        private readonly ILogger _logger = logger.CreateLogger(LoggerConstants.EventsLogger);
 
         public Task Handle(CommentAddedEvent notification, CancellationToken cancellationToken)
         {

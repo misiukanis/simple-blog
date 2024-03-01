@@ -3,20 +3,13 @@ using MediatR;
 
 namespace Blog.Application.Commands.SendEmail
 {
-    public class SendEmailCommandHandler : IRequestHandler<SendEmailCommand>
+    public class SendEmailCommandHandler(IEmailService emailService) : IRequestHandler<SendEmailCommand>
     {
-        private readonly IEmailsService _emailsService;
+        private readonly IEmailService _emailService = emailService;
 
-        public SendEmailCommandHandler(IEmailsService emailsService)
+        public async Task Handle(SendEmailCommand request, CancellationToken cancellationToken)
         {
-            _emailsService = emailsService;
-        }
-
-        public async Task<Unit> Handle(SendEmailCommand request, CancellationToken cancellationToken)
-        {
-            await _emailsService.SendEmailAsync(request.EmailFrom, request.Subject, request.Message);
-
-            return Unit.Value;
+            await _emailService.SendEmailAsync(request.EmailFrom, request.Subject, request.Message);
         }
     }
 }

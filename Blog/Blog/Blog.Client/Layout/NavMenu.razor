@@ -1,0 +1,49 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Blog</a>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="posts">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Posts
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="create-post">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Create post
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="comments">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Comments
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="author">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Author
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="contact">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Contact
+            </NavLink>
+        </div>
+    </nav>
+</div>
+
+

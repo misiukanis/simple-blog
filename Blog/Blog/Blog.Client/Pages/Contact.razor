@@ -1,0 +1,69 @@
+﻿@page "/contact"
+@using Blog.Client.HttpClients
+@using Blog.Shared.DTOs
+@using Resources
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+@inject BlogHttpClient BlogHttpClient
+
+
+<PageTitle>Contact</PageTitle>
+
+
+<div class="independent-form">
+    <h2>Contact form</h2>
+
+    <EditForm Model="@EmailMessage" OnValidSubmit="@HandleValidSubmit">
+        <div class="independent-form-errors">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+        </div>
+
+        <div class="editor-label">
+            <label>Email</label>
+        </div>
+        <div class="editor-field">
+            <InputText @bind-Value="EmailMessage.Email" style="width:300px" />
+        </div>
+
+        <div class="editor-label">
+            <label>Subject</label>
+        </div>
+        <div class="editor-field">
+            <InputText @bind-Value="EmailMessage.Subject" style="width:600px" />
+        </div>
+
+        <div class="editor-label">
+            <label>Message</label>
+        </div>
+        <div class="editor-field">
+            <InputTextArea @bind-Value="EmailMessage.Message" rows="15" cols="70" />
+        </div>
+        <br />
+
+        <div class="independent-form-submit">
+            <input type="submit" value="Send" />
+        </div>
+    </EditForm>
+</div>
+
+
+@code {
+    public CreateEmailMessageDTO EmailMessage = new CreateEmailMessageDTO();
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            await BlogHttpClient.SendEmailAsync(EmailMessage);
+        }
+        catch(Exception)
+        {
+            ToastService.ShowError(Messages.ErrorOccured);
+            return;
+        }
+
+        EmailMessage = new CreateEmailMessageDTO();
+        ToastService.ShowSuccess(Messages.ThanksForEmail);
+    }
+}

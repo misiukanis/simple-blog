@@ -1,0 +1,93 @@
+﻿@page "/comments"
+@using Blog.Shared.Enums
+@using Blog.Client.HttpClients
+@using Blog.Shared.Extensions
+@using Blog.Shared.DTOs
+@using Resources
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Blog.Shared
+@attribute [Authorize]
+@inject IToastService ToastService
+@inject BlogHttpClient BlogHttpClient
+@inject NavigationManager NavigationManager
+
+
+<PageTitle>Comments</PageTitle>
+
+
+<table class="comments-table">
+    <tr>
+        <th>
+            Author
+        </th>
+        <th>
+            Content
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Creation date
+        </th>
+    </tr>
+
+    @foreach (var comment in BlogComments)
+    {
+        <tr>
+            <td>
+                @comment.Author
+            </td>
+            <td>
+                @comment.Content
+            </td>
+            <td>
+                @{
+                    if (comment.CommentStatus == CommentStatus.New)
+                    {
+                        <div class="comment-status-new">@(comment.CommentStatus.GetDescription())</div>
+                        <div class="comment-status-option">
+                            <a href="" @onclick="() => ChangeCommentStatus(comment, CommentStatus.Accepted)" @onclick:preventDefault>Accept</a>
+                            <a href="" @onclick="() => ChangeCommentStatus(comment, CommentStatus.Rejected)" @onclick:preventDefault>Reject</a>
+                        </div>
+                    }
+                    else if (comment.CommentStatus == CommentStatus.Accepted)
+                    {
+                        <div class="comment-status-accepted">@(comment.CommentStatus.GetDescription())</div>
+                        <div class="comment-status-option">
+                            <a href="" @onclick="() => ChangeCommentStatus(comment, CommentStatus.Rejected)" @onclick:preventDefault>Reject</a>
+                        </div>
+                    }
+                    else if (comment.CommentStatus == CommentStatus.Rejected)
+                    {
+                        <div class="comment-status-rejected">@(comment.CommentStatus.GetDescription())</div>
+                        <div class="comment-status-option">
+                            <a href="" @onclick="() => ChangeCommentStatus(comment, CommentStatus.Accepted)" @onclick:preventDefault>Accept</a>
+                        </div>
+                    }
+                }
+            </td>
+            <td>
+                @comment.CreationDate.ToShortDateString()
+            </td>
+        </tr>
+    }
+</table>
+
+
+@code {
+    public List<CommentDTO> BlogComments = new List<CommentDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        BlogComments = await BlogHttpClient.GetCommentsAsync();
+    }
+
+    private async Task ChangeCommentStatus(CommentDTO comment, CommentStatus newCommentStatus)
+    {
+        await BlogHttpClient.ChangeCommentStatusAsync(comment.CommentId, newCommentStatus);
+
+        comment.CommentStatus = newCommentStatus;
+        ToastService.ShowSuccess(Messages.CommentStatusChanged);
+    }
+}

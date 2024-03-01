@@ -1,39 +1,29 @@
 ﻿using Blog.Application.Exceptions;
 using Blog.Domain.Core;
+using Blog.Domain.Entities.PostAggregate;
 using Blog.Domain.Repositories.Interfaces;
 using MediatR;
 
 namespace Blog.Application.Commands.ChangeCommentStatus
 {
-    public class ChangeCommentStatusCommandHandler : IRequestHandler<ChangeCommentStatusCommand>
+    public class ChangeCommentStatusCommandHandler(
+        IPostsRepository postsRepository, 
+        IUnitOfWork unitOfWork) : IRequestHandler<ChangeCommentStatusCommand>
     {
-        private readonly IPostsRepository _postsRepository;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IPostsRepository _postsRepository = postsRepository;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-        public ChangeCommentStatusCommandHandler(IPostsRepository postsRepository, IUnitOfWork unitOfWork)
+        public async Task Handle(ChangeCommentStatusCommand request, CancellationToken cancellationToken)
         {
-            _postsRepository = postsRepository;
-            _unitOfWork = unitOfWork;
-        }
-
-        public async Task<Unit> Handle(ChangeCommentStatusCommand request, CancellationToken cancellationToken)
-        {
-            var post = await _postsRepository.GetByIdAsync(request.PostId);
+            var post = await _postsRepository.GetByCommentIdAsync(request.CommentId);
             if (post == null)
             {
-                throw new NotFoundException(nameof(Domain.Entities.PostAggregate.Post), request.PostId);
+                throw new NotFoundException(nameof(Post), nameof(Comment.CommentId), request.CommentId);
             }
 
-            if (!post.Comments.Any(x => x.CommentId == request.CommentId))
-            {
-                throw new NotFoundException(nameof(Domain.Entities.PostAggregate.Comment), request.CommentId);
-            }
-
-            post.ChangeCommentStatus(request.CommentId, (Domain.Entities.PostAggregate.CommentStatus)request.CommentStatus);
+            post.ChangeCommentStatus(request.CommentId, (CommentStatus)request.CommentStatus);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
         }
     }
 }

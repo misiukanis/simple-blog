@@ -1,25 +1,17 @@
-﻿using AutoMapper;
-using Blog.Common.Pagination;
-using Blog.Domain.Entities.PostAggregate;
-using Blog.Shared.DTOs;
+﻿using Blog.Shared.DTOs;
+using Blog.Shared.Enums;
 using Dapper;
 using MediatR;
 using System.Data;
+using X.PagedList;
 
 namespace Blog.Application.Queries.GetPaginatedPosts
 {
-    public class GetPaginatedPostsQueryHandler : IRequestHandler<GetPaginatedPostsQuery, PaginatedList<PostDTO>>
+    public class GetPaginatedPostsQueryHandler(IDbConnection dbConnection) : IRequestHandler<GetPaginatedPostsQuery, IPagedList<PostDTO>>
     {
-        private readonly IDbConnection _dbConnection;
-        private readonly IMapper _mapper;
+        private readonly IDbConnection _dbConnection = dbConnection;
 
-        public GetPaginatedPostsQueryHandler(IDbConnection dbConnection, IMapper mapper)
-        {
-            _dbConnection = dbConnection;
-            _mapper = mapper;
-        }
-
-        public async Task<PaginatedList<PostDTO>> Handle(GetPaginatedPostsQuery request, CancellationToken cancellationToken)
+        public async Task<IPagedList<PostDTO>> Handle(GetPaginatedPostsQuery request, CancellationToken cancellationToken)
         {
             var sql = @"
                         SELECT 
@@ -41,7 +33,7 @@ namespace Blog.Application.Queries.GetPaginatedPosts
                         FROM Posts AS posts
                         WHERE (Title LIKE @SearchTerm OR Introduction LIKE @SearchTerm OR Content LIKE @SearchTerm) AND IsRemoved = 0;";
 
-            IEnumerable<PostDTO> postsDTO = null;
+            IEnumerable<PostDTO>? postsDTO = null;
             int totalItemsCount = 0;
 
             using (var multi = await _dbConnection.QueryMultipleAsync(sql,
@@ -57,11 +49,8 @@ namespace Blog.Application.Queries.GetPaginatedPosts
                 totalItemsCount = multi.ReadFirst<int>();
             }
 
-            var totalPagesCount = (int)Math.Ceiling(totalItemsCount / (double)request.ItemsCountPerPage);
-            var paginatedPostsDTO = new PaginatedList<PostDTO>(postsDTO, request.Page, request.ItemsCountPerPage, totalItemsCount, totalPagesCount);
-
+            var paginatedPostsDTO = new StaticPagedList<PostDTO>(postsDTO, request.Page, request.ItemsCountPerPage, totalItemsCount);
             return paginatedPostsDTO;
         }
     }
-
 }

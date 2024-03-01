@@ -5,20 +5,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Infrastructure.Repositories
 {
-    public class PostsRepository : IPostsRepository
+    public class PostsRepository(ApplicationDbContext applicationDbContext) : IPostsRepository
     {
-        private readonly ApplicationDbContext _applicationDbContext;
-
-        public PostsRepository(ApplicationDbContext applicationDbContext)
-        {
-            _applicationDbContext = applicationDbContext;
-        }
+        private readonly ApplicationDbContext _applicationDbContext = applicationDbContext;
 
         public async Task<Post> GetByIdAsync(Guid id)
         {
             var post = await _applicationDbContext.Posts
                 .Include(x => x.Comments)
-                .SingleOrDefaultAsync(x => x.PostId == id);
+                .FirstOrDefaultAsync(x => x.PostId == id);
+
+            return post;
+        }
+
+        public async Task<Post> GetByCommentIdAsync(Guid commentId)
+        {
+            var post = await _applicationDbContext.Posts
+                .Include(x => x.Comments)
+                .Where(x => x.Comments.Any(y => y.CommentId == commentId))
+                .FirstOrDefaultAsync();
 
             return post;
         }

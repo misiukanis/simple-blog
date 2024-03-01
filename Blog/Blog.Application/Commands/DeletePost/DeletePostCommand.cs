@@ -2,13 +2,8 @@
 
 namespace Blog.Application.Commands.DeletePost
 {
-    public class DeletePostCommand : IRequest
+    public class DeletePostCommand(Guid postId) : IRequest
     {
-        public Guid PostId { get; }
-
-        public DeletePostCommand(Guid postId)
-        {
-            PostId = postId;
-        }
+        public Guid PostId { get; } = postId;
     }
 }

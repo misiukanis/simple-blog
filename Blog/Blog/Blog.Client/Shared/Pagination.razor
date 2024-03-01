@@ -1,0 +1,57 @@
+﻿@using Blog.Client.Models
+@using Blog.Shared.Metadata
+
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        @foreach (var link in links)
+        {
+            <li @onclick="() => OnSelectedPage(link)" style="cursor: pointer;" class="page-item @(link.Enabled ? null : "disabled") @(link.Active ? "active" : null)">
+                <span class="page-link" href="#">@link.Text</span>
+            </li>
+        }
+    </ul>
+</nav>
+
+
+@code {
+    [Parameter]
+    public PaginationMetadata MetaData { get; set; }
+
+    [Parameter]
+    public int Spread { get; set; }
+
+    [Parameter]
+    public EventCallback<int> SelectedPage { get; set; }
+
+    private List<PagingLink> links;
+
+    
+    protected override void OnParametersSet()
+    {
+        CreatePaginationLinks();
+    }
+
+    private void CreatePaginationLinks()
+    {
+        links = new List<PagingLink>();
+        links.Add(new PagingLink(MetaData.CurrentPage - 1, MetaData.HasPreviousPage, false, "Previous"));
+        for (int i = 1; i <= MetaData.TotalPagesCount; i++)
+        {
+            if(i >= MetaData.CurrentPage - Spread && i <= MetaData.CurrentPage + Spread)
+            {
+                links.Add(new PagingLink(i, true, MetaData.CurrentPage == i, i.ToString()));
+            }
+        }
+        links.Add(new PagingLink(MetaData.CurrentPage + 1, MetaData.HasNextPage, false, "Next"));
+    }
+
+    private async Task OnSelectedPage(PagingLink link)
+    {
+        if (link.Page == MetaData.CurrentPage || !link.Enabled)
+            return;
+
+        MetaData.CurrentPage = link.Page;
+        await SelectedPage.InvokeAsync(link.Page);
+    }
+}

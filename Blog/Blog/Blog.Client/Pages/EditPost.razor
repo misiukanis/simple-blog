@@ -1,0 +1,96 @@
+﻿@page "/edit-post/{PostId:guid}"
+@using Blog.Client.HttpClients
+@using Blog.Shared.Constants
+@using Blog.Shared.DTOs
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Blog.Shared
+@using Resources
+@using TinyMCE.Blazor
+@using Blog.Client.TinyMce
+@attribute [Authorize]
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+@inject BlogHttpClient BlogHttpClient
+@inject IConfiguration Configuration
+
+
+<PageTitle>Edit post</PageTitle>
+
+
+<div class="independent-form">
+    <h2>Edit post</h2>
+
+    <p>
+        <button class="actionButton" @onclick="@(() => Modal.Show<UploadImage>("Image upload", modalOptions))">Upload image</button>
+    </p>
+
+    <EditForm Model="@ExistingPost" OnValidSubmit="@HandleValidSubmit">
+        <div class="independent-form-errors">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+        </div>
+
+        <div class="editor-label">
+            <label>Title</label>
+        </div>
+        <div class="editor-field">
+            <InputText @bind-Value="ExistingPost.Title" style="width:400px" />
+        </div>
+
+        <div class="editor-label">
+            <label>Introduction</label>
+        </div>
+        <div class="editor-field">
+            <InputTextArea @bind-Value="ExistingPost.Introduction" rows="10" cols="70" />
+        </div>
+
+        <div class="editor-label">
+            <label>Content</label>
+        </div>
+        <div class="editor-field-tinymce">
+            <Editor 
+                Field="() => ExistingPost.Content" 
+                @bind-Value="ExistingPost.Content"
+                ApiKey="@Configuration[SettingConstants.TinyMceApiKey]"
+                Conf="@TinyMceConfiguration.TinyMceConf" />
+        </div>        
+        <br />
+
+        <div class="independent-form-submit">
+            <input type="submit" value="Save" />
+        </div>
+    </EditForm>
+</div>
+
+
+@code {
+    [Parameter]
+    public Guid PostId { get; set; }
+
+    public UpdatePostDTO ExistingPost = new UpdatePostDTO();
+
+    [CascadingParameter]
+    public IModalService Modal { get; set; }
+
+    private ModalOptions modalOptions = new ModalOptions()
+    {
+        Size = ModalSize.Automatic
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        var post = await BlogHttpClient.GetPostByIdAsync(PostId);
+        ExistingPost.PostId = post.PostId;
+        ExistingPost.Title = post.Title;
+        ExistingPost.Introduction = post.Introduction;
+        ExistingPost.Content = post.Content;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await BlogHttpClient.UpdatePostAsync(ExistingPost);
+
+        ToastService.ShowSuccess(Messages.PostSaved);
+    }
+}

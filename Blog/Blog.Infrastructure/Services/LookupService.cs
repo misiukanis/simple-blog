@@ -4,14 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Infrastructure.Services
 {
-    public class LookupService : ILookupService
+    public class LookupService(ApplicationDbContext applicationDbContext) : ILookupService
     {
-        private readonly ApplicationDbContext _applicationDbContext;
-
-        public LookupService(ApplicationDbContext applicationDbContext)
-        {
-            _applicationDbContext = applicationDbContext;
-        }
+        private readonly ApplicationDbContext _applicationDbContext = applicationDbContext;
 
         public async Task<IEnumerable<string>> GetForbiddenWordsAsync()
         {

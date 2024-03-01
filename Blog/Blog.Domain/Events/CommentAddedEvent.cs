@@ -3,13 +3,8 @@ using Blog.Domain.Entities.PostAggregate;
 
 namespace Blog.Domain.Events
 {
-    public class CommentAddedEvent : DomainEvent
+    public class CommentAddedEvent(Comment comment) : DomainEvent
     {
-        public Comment Comment { get; }
-
-        public CommentAddedEvent(Comment comment)
-        {
-            Comment = comment;
-        }
+        public Comment Comment { get; } = comment;
     }
 }

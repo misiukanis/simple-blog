@@ -3,18 +3,16 @@ using Blog.Domain.Entities.PostAggregate;
 using Blog.Domain.ValueObjects;
 using Blog.Infrastructure.Identity;
 using Blog.Infrastructure.Services.Interfaces;
-using Duende.IdentityServer.EntityFramework.Options;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System.Reflection;
 
 namespace Blog.Infrastructure.Persistence
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, IUnitOfWork
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IUnitOfWork
     {
         private readonly IDomainEventsDispatcher _domainEventsDispatcher;
-
+                
 
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -22,9 +20,8 @@ namespace Blog.Infrastructure.Persistence
 
 
         public ApplicationDbContext(
-            DbContextOptions options,
-            IOptions<OperationalStoreOptions> operationalStoreOptions,
-            IDomainEventsDispatcher domainEventsDispatcher) : base(options, operationalStoreOptions)
+            DbContextOptions<ApplicationDbContext> options,
+            IDomainEventsDispatcher domainEventsDispatcher) : base(options)
         {
             _domainEventsDispatcher = domainEventsDispatcher;
         }

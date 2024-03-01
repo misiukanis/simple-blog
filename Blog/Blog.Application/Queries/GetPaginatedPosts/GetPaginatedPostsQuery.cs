@@ -1,20 +1,16 @@
-﻿using Blog.Common.Pagination;
-using Blog.Shared.DTOs;
+﻿using Blog.Shared.DTOs;
 using MediatR;
+using X.PagedList;
 
 namespace Blog.Application.Queries.GetPaginatedPosts
 {
-    public class GetPaginatedPostsQuery : IRequest<PaginatedList<PostDTO>>
+    public class GetPaginatedPostsQuery(
+        int page, 
+        int itemsCountPerPage, 
+        string? searchTerm) : IRequest<IPagedList<PostDTO>>
     {
-        public int Page { get; }
-        public int ItemsCountPerPage { get; }
-        public string SearchTerm { get; }
-
-        public GetPaginatedPostsQuery(int page, int itemsCountPerPage, string searchTerm)
-        {
-            Page = page;
-            ItemsCountPerPage = itemsCountPerPage;
-            SearchTerm = searchTerm;
-        }
+        public int Page { get; } = page;
+        public int ItemsCountPerPage { get; } = itemsCountPerPage;
+        public string? SearchTerm { get; } = searchTerm;
     }
 }

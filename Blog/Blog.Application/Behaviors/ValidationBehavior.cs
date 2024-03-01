@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Blog.Application.Behaviors
 {
-    public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
+    public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IBaseRequest
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -12,17 +12,20 @@ namespace Blog.Application.Behaviors
             _validators = validators;
         }
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
-            var failures = _validators
-                .Select(v => v.Validate(request))
-                .SelectMany(result => result.Errors)
-                .Where(error => error != null)
+            var context = new ValidationContext<TRequest>(request);
+
+            var validationResults = await Task.WhenAll(_validators.Select(validator => validator.ValidateAsync(context, cancellationToken)));
+
+            var validationFailures = validationResults
+                .Where(result => result.Errors.Any())
+                .SelectMany(result => result.Errors)                
                 .ToList();
 
-            if (failures.Any())
+            if (validationFailures.Any())
             {
-                throw new ValidationException(failures);
+                throw new ValidationException(validationFailures);
             }
 
             return await next();

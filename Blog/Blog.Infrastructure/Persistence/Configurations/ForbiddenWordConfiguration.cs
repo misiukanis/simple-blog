@@ -10,7 +10,7 @@ namespace Blog.Infrastructure.Persistence.Configurations
         {
             builder.ToTable("ForbiddenWords");
 
-            builder.Property<int>("ForbiddenWordId"); 
+            builder.Property<int>("ForbiddenWordId"); // shadow property
         }
     }
 }
