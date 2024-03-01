@@ -1,8 +1,15 @@
 # A simple BLOG
 
+**Posts**
 ![blog](screen1.png)
+
+**A single post**
 ![blog](screen2.png)
+
+**Create a post**
 ![blog](screen3.png)
+
+**Manage posts**
 ![blog](screen4.png)
 
 ## Architecture
