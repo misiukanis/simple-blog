@@ -1,6 +1,9 @@
 # A simple BLOG
 
-![blog](screen.PNG)
+![blog](screen1.PNG)
+![blog](screen2.PNG)
+![blog](screen3.PNG)
+![blog](screen4.PNG)
 
 ## Architecture
 
