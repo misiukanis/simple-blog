@@ -9,9 +9,9 @@
 - CQRS
 
 ## Technologies
-- .NET 6.0
-- C# 10
-- Blazor WebAssembly App
+- .NET 8.0
+- C# 12
+- Blazor WebAssembly
 - ASP.NET Core Web API
 - Entity Framework
 - Dapper ORM
@@ -25,15 +25,15 @@
 
 | Layer | Description |
 | ------ | ------ |
+| Blog | API |
 | Blog.Client | Blazor application |
-| Blog.Server | API |
 | Blog.Application | Communication with Domain Layer |
 | Blog.Infrastructure | Persistence |
 | Blog.Domain | Core business logic |
 
 
 ## How to run the application
-Create database - in Package Manager Console for Blog.Infrastructure project write:
+Fill fields in appsettings.json, create database - in Package Manager Console for Blog.Infrastructure project run:
 ```sh
 update-database
 ```
