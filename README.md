@@ -1,16 +1,31 @@
 # A simple BLOG
 
-**Posts**
+> [!NOTE]
+> The posts page:
+
 ![blog](screen1.png)
+--
 
-**A single post**
+> [!NOTE]
+> The single post page:
+
 ![blog](screen2.png)
+--
 
-**Create a post**
+
+> [!NOTE]
+> The creating post page:
+
 ![blog](screen3.png)
+--
 
-**Manage posts**
+
+> [!NOTE]
+> The comment management page:
+
 ![blog](screen4.png)
+--
+
 
 ## Architecture
 
