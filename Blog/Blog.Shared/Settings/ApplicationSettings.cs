@@ -1,6 +1,6 @@
 ﻿namespace Blog.Shared.Settings
 {
-    public record ApplicationSettings
+    public class ApplicationSettings
     {
         public required string UploadedImagesDirectory { get; init; }
     }

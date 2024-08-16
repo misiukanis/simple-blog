@@ -2,7 +2,7 @@
 
 namespace Blog.Shared.DTOs
 {
-    public record PostWithCommentsDTO
+    public class PostWithCommentsDTO
     {
         public Guid PostId { get; set; }
 
@@ -19,7 +19,7 @@ namespace Blog.Shared.DTOs
         public IEnumerable<CommentDTO> Comments { get; set; } = new List<CommentDTO>();
 
 
-        public record CommentDTO
+        public class CommentDTO
         {
             public Guid CommentId { get; set; }
 

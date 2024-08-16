@@ -1,5 +1,4 @@
-﻿using Blog.Shared.Enums;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Blog.Application.Commands.ChangeCommentStatus
 {
@@ -11,9 +10,9 @@ namespace Blog.Application.Commands.ChangeCommentStatus
                 .Must(EnumIsDefined);
         }
 
-        private bool EnumIsDefined(CommentStatus commentStatus)
+        private bool EnumIsDefined(Shared.Enums.CommentStatus commentStatus)
         {
-            bool enumIsDefined = Enum.IsDefined(typeof(Domain.Entities.PostAggregate.CommentStatus), (int)commentStatus);
+            bool enumIsDefined = Enum.IsDefined(typeof(Domain.Enums.CommentStatus), (int)commentStatus);
             return enumIsDefined;
         }
     }

@@ -1,10 +1,10 @@
 ﻿using Blog.Application.Commands.ChangeCommentStatus;
-using Blog.Application.Exceptions;
 using Blog.Application.Queries.GetCommentById;
 using Blog.Application.Queries.GetComments;
 using Blog.Shared.DTOs;
 using Blog.Shared.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -60,14 +60,7 @@ namespace Blog.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ChangeCommentStatus(Guid commentId, [FromBody][EnumDataType(typeof(CommentStatus))] CommentStatus commentStatus)
         {
-            try
-            {
-                await _mediator.Send(new ChangeCommentStatusCommand(commentId, commentStatus));
-            }
-            catch (NotFoundException)
-            {
-                return NotFound();
-            }
+            await _mediator.Send(new ChangeCommentStatusCommand(commentId, commentStatus));
 
             return NoContent();
         }

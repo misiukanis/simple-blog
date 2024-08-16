@@ -1,6 +1,7 @@
 ﻿using Blog.Application.Exceptions;
 using Blog.Domain.Core;
 using Blog.Domain.Entities.PostAggregate;
+using Blog.Domain.Enums;
 using Blog.Domain.Repositories.Interfaces;
 using MediatR;
 

@@ -2,7 +2,7 @@
 
 namespace Blog.Shared.DTOs
 {
-    public record CreatePostDTO
+    public class CreatePostDTO
     {
         [Required]
         [StringLength(100)]

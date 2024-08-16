@@ -3,6 +3,7 @@ using Blog.Shared.DTOs;
 using Blog.Shared.Extensions;
 using Blog.Shared.Settings;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 

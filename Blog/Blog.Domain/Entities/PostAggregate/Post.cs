@@ -1,4 +1,5 @@
 ﻿using Blog.Domain.Core;
+using Blog.Domain.Enums;
 using Blog.Domain.Events;
 
 namespace Blog.Domain.Entities.PostAggregate

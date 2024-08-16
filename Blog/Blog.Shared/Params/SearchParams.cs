@@ -1,6 +1,6 @@
 ﻿namespace Blog.Shared.Params
 {
-    public record SearchParams
+    public class SearchParams
     {
         public string? SearchTerm { get; set; }
     }

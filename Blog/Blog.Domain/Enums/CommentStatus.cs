@@ -1,4 +1,4 @@
-﻿namespace Blog.Domain.Entities.PostAggregate
+﻿namespace Blog.Domain.Enums
 {
     public enum CommentStatus
     {

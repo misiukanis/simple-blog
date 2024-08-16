@@ -20,8 +20,8 @@
 
 <div class="independent-form">
     <h2>Edit post</h2>
-
-    <p>
+    
+    <p class="upload-image-button">
         <button class="actionButton" @onclick="@(() => Modal.Show<UploadImage>("Image upload", modalOptions))">Upload image</button>
     </p>
 
@@ -47,7 +47,7 @@
 
         <div class="editor-label">
             <label>Content</label>
-        </div>
+        </div>        
         <div class="editor-field-tinymce">
             <Editor 
                 Field="() => ExistingPost.Content" 

@@ -1,6 +1,6 @@
 ﻿namespace Blog.Shared.Metadata
 {
-    public record PaginationMetadata
+    public class PaginationMetadata
     {
         public int CurrentPage { get; set; }
         public int ItemsCountPerPage { get; set; }

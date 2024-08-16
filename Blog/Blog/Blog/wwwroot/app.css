@@ -54,6 +54,10 @@ h1:focus {
 
 /* new added styles: */
 
+.content {
+    width: 960px;
+}
+
 .aligncenter {
     text-align: center;
 }
@@ -151,7 +155,7 @@ h1:focus {
     }
 
     .independent-form input {
-        padding: 9px 15px 12px 15px;
+        padding: 10px 15px 10px 15px;
         background: #fff;
         outline: none;
         border-left: 1px solid #919191;
@@ -195,7 +199,7 @@ h1:focus {
     }
 
         .independent-form-submit input:hover {
-            background-color: rgb(24, 27, 91);
+            background-color: rgb(76, 80, 211);
         }
 
 .actionButton {
@@ -210,7 +214,7 @@ h1:focus {
 }
 
     .actionButton:hover {
-        background-color: rgb(24, 27, 91);
+        background-color: rgb(76, 80, 211);
         color: white;
         text-decoration: none;
     }
@@ -264,17 +268,25 @@ h1:focus {
 
 .more {
     float: right;
-    background-color: #C6224C;
-    border-radius: 6px 6px 6px 6px;
-    font-size: 100%;
-    padding: 5px;
-    margin-right: 5px;
+    display: inline-block;
 }
 
     .more a {
-        color: orange;
+        color: #fff;
         text-decoration: none;
         outline: none;
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 8px;
+        border: none;
+        background-color: rgb(84, 105, 212);
+    }
+
+    .more a:hover {
+        background-color: rgb(76, 80, 211);
     }
 
 .single-container {
@@ -414,15 +426,14 @@ h1:focus {
 }
 
 .comment-status-accepted {
-    background-color: #90EE90;
+    background-color: rgb(42,211,98);
 }
 
 .comment-status-rejected {
-    background-color: palevioletred;
+    background-color: rgb(211,101,130);
 }
 
 .comment-status-new, .comment-status-accepted, .comment-status-rejected {
-    border-radius: 15px;
     text-align: center;
     padding: 5px;
 }
@@ -430,7 +441,7 @@ h1:focus {
 .comment-status-option a:link, .comment-status-option a:visited {
     background-color: rgb(84, 105, 212);
     color: white;
-    padding: 10px 10px;
+    padding: 10px 15px 10px 15px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -440,7 +451,7 @@ h1:focus {
 }
 
 .comment-status-option a:hover, .comment-status-option a:active {
-    background-color: rgb(24, 27, 91);
+    background-color: rgb(76, 80, 211);
 }
 
 .editor-field-tinymce .invalid {
@@ -450,3 +461,30 @@ h1:focus {
 .editor-field-tinymce .valid {
     outline: none !important;
 }
+
+.upload-image-button {
+    margin-top: 10px;
+}
+
+.save-form input {
+    margin-top: 10px;
+    background-color: rgb(84, 105, 212);
+    color: white;
+    float: right;  
+    padding: 10px 15px 10px 15px;
+    outline: none;
+    border-left: 1px solid #919191;
+    border-top: 1px solid #919191;
+    border-right: 1px solid #c4c4c4;
+    border-bottom: 1px solid #c4c4c4;
+    border-radius: 17px;
+    -moz-border-radius: 17px;
+    -webkit-border-radius: 17px;
+    display: block;
+    margin: 0;
+    box-shadow: none !important;
+}
+
+    .save-form input:hover {
+        background-color: rgb(76, 80, 211);
+    }

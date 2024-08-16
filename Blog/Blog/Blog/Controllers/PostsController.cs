@@ -3,7 +3,6 @@ using Blog.Application.Commands.CreateComment;
 using Blog.Application.Commands.CreatePost;
 using Blog.Application.Commands.DeletePost;
 using Blog.Application.Commands.UpdatePost;
-using Blog.Application.Exceptions;
 using Blog.Application.Queries.GetPaginatedPosts;
 using Blog.Application.Queries.GetPostById;
 using Blog.Shared.Constants;
@@ -11,6 +10,7 @@ using Blog.Shared.DTOs;
 using Blog.Shared.Metadata;
 using Blog.Shared.Params;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using X.PagedList;
@@ -89,15 +89,7 @@ namespace Blog.Controllers
             }
 
             var postCommand = new UpdatePostCommand(postDTO.PostId, postDTO.Title, postDTO.Introduction, postDTO.Content);
-
-            try
-            {
-                await _mediator.Send(postCommand);
-            }
-            catch (NotFoundException)
-            {
-                return NotFound();
-            }
+            await _mediator.Send(postCommand);
 
             return NoContent();
         }
@@ -112,14 +104,7 @@ namespace Blog.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeletePost(Guid postId)
         {
-            try
-            {
-                await _mediator.Send(new DeletePostCommand(postId));
-            }
-            catch (NotFoundException)
-            {
-                return NotFound();
-            }
+            await _mediator.Send(new DeletePostCommand(postId));
 
             return NoContent();
         }
@@ -132,15 +117,7 @@ namespace Blog.Controllers
         public async Task<IActionResult> CreateComment(Guid postId, CreateCommentDTO commentDTO)
         {
             var commentCommand = new CreateCommentCommand(postId, Guid.NewGuid(), commentDTO.Author, commentDTO.Content);
-
-            try
-            {
-                await _mediator.Send(commentCommand);
-            }
-            catch (NotFoundException)
-            {
-                return NotFound();
-            }
+            await _mediator.Send(commentCommand);
 
             return CreatedAtAction(nameof(CommentsController.GetCommentById), ControllerConstants.Comments,
                 new { commentId = commentCommand.CommentId }, commentCommand);

@@ -47,7 +47,7 @@
     private bool isUserAuthenticated = false;
 
     protected override async Task OnInitializedAsync()
-    {        
+    {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         isUserAuthenticated = authState.User.Identity.IsAuthenticated;
 

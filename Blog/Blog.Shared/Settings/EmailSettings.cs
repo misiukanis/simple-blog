@@ -1,6 +1,6 @@
 ﻿namespace Blog.Shared.Settings
 {
-    public record EmailSettings
+    public class EmailSettings
     {
         public required string EmailAddress { get; init; }
         public required string EmailPassword { get; init; }

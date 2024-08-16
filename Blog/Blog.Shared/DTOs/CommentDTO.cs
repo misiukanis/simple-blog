@@ -2,7 +2,7 @@
 
 namespace Blog.Shared.DTOs
 {
-    public record CommentDTO
+    public class CommentDTO
     {
         public Guid CommentId { get; set; }
 

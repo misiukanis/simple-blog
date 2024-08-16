@@ -11,6 +11,7 @@
     <PackageReference Include="Dapper" Version="2.1.28" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
     <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
     <PackageReference Include="X.PagedList" Version="8.4.7" />
@@ -19,10 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Blog.Domain\Blog.Domain.csproj" />
     <ProjectReference Include="..\Blog.Shared\Blog.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Automapper\MappingProfiles\" />
   </ItemGroup>
 
 </Project>

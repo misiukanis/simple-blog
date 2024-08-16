@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Blog.Shared.DTOs
 {
-    public record UploadImageDTO
+    public class UploadImageDTO
     {
         [MaxFileSize(1048576)] // 1 MB
         [AllowedFileExtensions("jpg,png,gif,jpeg")]

@@ -4,9 +4,9 @@
     {
         private readonly IList<IDomainEvent> _domainEvents = new List<IDomainEvent>();
 
-        public IEnumerable<IDomainEvent> GetDomainEvents()
+        public IReadOnlyCollection<IDomainEvent> GetDomainEvents()
         {
-            return _domainEvents.AsEnumerable();
+            return _domainEvents.AsReadOnly();
         }
 
         public void ClearDomainEvents()

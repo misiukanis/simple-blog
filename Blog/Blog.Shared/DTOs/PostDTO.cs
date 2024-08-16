@@ -1,6 +1,6 @@
 ﻿namespace Blog.Shared.DTOs
 {
-    public record PostDTO
+    public class PostDTO
     {
         public Guid PostId { get; set; }
 

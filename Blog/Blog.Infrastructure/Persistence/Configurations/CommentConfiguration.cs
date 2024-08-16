@@ -1,4 +1,5 @@
 ﻿using Blog.Domain.Entities.PostAggregate;
+using Blog.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;

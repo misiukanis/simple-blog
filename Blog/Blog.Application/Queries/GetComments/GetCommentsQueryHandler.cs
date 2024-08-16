@@ -1,17 +1,19 @@
-﻿using Blog.Shared.DTOs;
+﻿using Blog.Application.Providers.Interfaces;
+using Blog.Shared.DTOs;
 using Dapper;
 using MediatR;
-using System.Data;
 
 namespace Blog.Application.Queries.GetComments
 {
-    public class GetCommentsQueryHandler(IDbConnection dbConnection) : IRequestHandler<GetCommentsQuery, IEnumerable<CommentDTO>>
+    public class GetCommentsQueryHandler(IDbConnectionFactory dbConnectionFactory) : IRequestHandler<GetCommentsQuery, IEnumerable<CommentDTO>>
     {
-        private readonly IDbConnection _dbConnection = dbConnection;
+        private readonly IDbConnectionFactory _dbConnectionFactory = dbConnectionFactory;
 
         public async Task<IEnumerable<CommentDTO>> Handle(GetCommentsQuery request, CancellationToken cancellationToken)
         {
-            var commentsDTO = await _dbConnection.QueryAsync<CommentDTO>(@"
+            using (var dbConnection = _dbConnectionFactory.CreateConnection())
+            {
+                var commentsDTO = await dbConnection.QueryAsync<CommentDTO>(@"
                         SELECT 
                             CommentId,
                             PostId,
@@ -21,8 +23,9 @@ namespace Blog.Application.Queries.GetComments
                             CreationDate
                         FROM Comments
                         ORDER BY CreationDate DESC");
-            
-            return commentsDTO;
+
+                return commentsDTO;
+            }
         }
     }
 }

@@ -3,7 +3,7 @@ using Blazored.Toast;
 using Blog.Application;
 using Blog.Components;
 using Blog.Components.Account;
-using Blog.Extensions;
+using Blog.ExceptionHandlers;
 using Blog.Infrastructure;
 using Blog.Infrastructure.Identity;
 using Blog.Infrastructure.Persistence;
@@ -46,6 +46,9 @@ try
     builder.Services.AddApplicationServices();
     builder.Services.AddInfrastructureServices(builder.Configuration);
 
+    builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+    builder.Services.AddProblemDetails();
+
     // NLog: 
     builder.Logging.ClearProviders();
     builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
@@ -86,6 +89,7 @@ try
         app.UseMigrationsEndPoint();
         app.UseSwagger();
         app.UseSwaggerUI();
+        app.UseExceptionHandler(opt => { });
     }
     else
     {
@@ -101,18 +105,18 @@ try
 
     app.MapAdditionalIdentityEndpoints();
 
-    app.MapControllers();
-
-    app.UseExceptionHandling();
+    app.MapControllers();    
 
     app.Run();
 }
 catch (Exception exception)
 {
+    // NLog: catch setup errors
     logger.Error(exception, "Stopped program because of exception");
     throw;
 }
 finally
 {
+    // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
     LogManager.Shutdown();
 }

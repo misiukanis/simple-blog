@@ -5,11 +5,11 @@ namespace Blog.Application.Commands.CreateComment
 {
     public class CreateCommentCommandValidator : AbstractValidator<CreateCommentCommand>
     {
-        private readonly ILookupService _lookupService;
+        private readonly IForbiddenWordsService _forbiddenWordsService;
 
-        public CreateCommentCommandValidator(ILookupService lookupService)
+        public CreateCommentCommandValidator(IForbiddenWordsService forbiddenWordsService)
         {
-            _lookupService = lookupService;
+            _forbiddenWordsService = forbiddenWordsService;
 
             RuleFor(x => x.Author)
                 .NotEmpty()
@@ -18,18 +18,20 @@ namespace Blog.Application.Commands.CreateComment
             RuleFor(x => x.Content)
                 .NotEmpty()
                 .MaximumLength(100000)
-                .MustAsync(async (content, cancellation) => 
-                {
-                    var forbiddenWords = await _lookupService.GetForbiddenWordsAsync();
-                    var contentHasForbiddenWords = false;
+                .MustAsync(NotContainForbiddenWords);
+        }
 
-                    if (forbiddenWords.Any(content.Contains))
-                    {
-                        contentHasForbiddenWords = true;
-                    }
+        public async Task<bool> NotContainForbiddenWords(string content, CancellationToken cancellationToken)
+        {
+            var forbiddenWords = await _forbiddenWordsService.GetForbiddenWordsAsync();
+            var contentHasForbiddenWords = false;
 
-                    return !contentHasForbiddenWords;
-                });
+            if (forbiddenWords.Any(content.Contains))
+            {
+                contentHasForbiddenWords = true;
+            }
+
+            return !contentHasForbiddenWords;
         }
     }
 }

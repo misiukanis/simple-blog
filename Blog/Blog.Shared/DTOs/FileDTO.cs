@@ -1,6 +1,6 @@
 ﻿namespace Blog.Shared.DTOs
 {
-    public record FileDTO
+    public class FileDTO
     {
         public byte[] File { get; set; } = default!;
         public string OriginalFileName { get; set; } = default!;
