@@ -60,7 +60,8 @@
 ## How to run the application
 Fill fields in appsettings.json, create database - in Package Manager Console for Blog.Infrastructure project run:
 ```sh
-update-database
+Add-Migration InitialCreate
+Update-Database
 ```
 Launch the application!
 
