@@ -8,7 +8,9 @@ namespace Blog.Shared.DTOs
 
         public Guid PostId { get; set; }
 
-        public string Author { get; set; } = default!;
+        public string AuthorName { get; set; } = default!;
+
+        public string AuthorEmail { get; set; } = default!;
 
         public string Content { get; set; } = default!;
 

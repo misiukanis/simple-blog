@@ -26,7 +26,7 @@ namespace Blog.Application.Queries.GetPostById
                 SELECT 
 	                CommentId,
                     PostId,
-	                Author,
+	                AuthorName,
 	                Content,
                     CommentStatusId AS CommentStatus,
 	                CreationDate

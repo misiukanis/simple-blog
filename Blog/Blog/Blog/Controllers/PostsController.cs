@@ -116,7 +116,7 @@ namespace Blog.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateComment(Guid postId, CreateCommentDTO commentDTO)
         {
-            var commentCommand = new CreateCommentCommand(postId, Guid.NewGuid(), commentDTO.Author, commentDTO.Content);
+            var commentCommand = new CreateCommentCommand(postId, Guid.NewGuid(), commentDTO.AuthorName, commentDTO.AuthorEmail, commentDTO.Content);
             await _mediator.Send(commentCommand);
 
             return CreatedAtAction(nameof(CommentsController.GetCommentById), ControllerConstants.Comments,

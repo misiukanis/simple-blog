@@ -36,10 +36,9 @@
     <article class="single-container">
         @comment.Content
         <br /><br />
-        <div class="fleft grey">Author: @comment.Author</div>
+        <div class="fleft grey">Author: @comment.AuthorName</div>
         <div class="fright grey">Creation date: @comment.CreationDate.ToShortDateString()</div>
     </article>
-    <div class="next-comment">&nbsp;</div>
 }
 
 
@@ -51,10 +50,17 @@
             <ValidationSummary />
 
             <div class="editor-label">
-                <label>Author</label>
+                <label>Name</label>
             </div>
             <div class="editor-field">
-                <InputText @bind-Value="NewComment.Author" />
+                <InputText @bind-Value="NewComment.AuthorName" style="width:300px" />
+            </div>
+
+            <div class="editor-label">
+                <label>Email</label>
+            </div>
+            <div class="editor-field">
+                <InputText @bind-Value="NewComment.AuthorEmail" style="width:300px" />
             </div>
 
             <div class="editor-label">

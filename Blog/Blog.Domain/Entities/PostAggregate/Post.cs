@@ -1,6 +1,7 @@
 ﻿using Blog.Domain.Core;
 using Blog.Domain.Enums;
 using Blog.Domain.Events;
+using Blog.Domain.ValueObjects;
 
 namespace Blog.Domain.Entities.PostAggregate
 {
@@ -56,7 +57,7 @@ namespace Blog.Domain.Entities.PostAggregate
             IsRemoved = true;
         }
 
-        public void AddComment(Guid commentId, string author, string content)
+        public void AddComment(Guid commentId, Author author, string content)
         {
             var comment = new Comment(commentId, author, content);
             Comments.Add(comment);

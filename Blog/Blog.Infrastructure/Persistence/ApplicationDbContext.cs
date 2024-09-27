@@ -1,6 +1,5 @@
 ﻿using Blog.Domain.Core;
 using Blog.Domain.Entities.PostAggregate;
-using Blog.Domain.ValueObjects;
 using Blog.Infrastructure.Identity;
 using Blog.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -16,7 +15,6 @@ namespace Blog.Infrastructure.Persistence
 
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<ForbiddenWord> ForbiddenWords { get; set; }
 
 
         public ApplicationDbContext(

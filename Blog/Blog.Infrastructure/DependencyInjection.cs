@@ -32,7 +32,6 @@ namespace Blog.Infrastructure
             services.AddScoped<IFileUploadingService, FileUploadingService>();
 
             services.AddScoped<IPostsRepository, PostsRepository>();
-            services.AddScoped<IForbiddenWordsService, ForbiddenWordsService>();
 
             return services;
         }

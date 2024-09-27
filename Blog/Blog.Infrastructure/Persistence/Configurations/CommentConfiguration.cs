@@ -15,6 +15,15 @@ namespace Blog.Infrastructure.Persistence.Configurations
 
             builder.Property(x => x.CommentId).ValueGeneratedNever();
 
+            // ValueObject:
+            builder.OwnsOne(
+                x => x.Author,
+                y =>
+                {
+                    y.Property(p => p.Name).HasColumnName("AuthorName");
+                    y.Property(p => p.Email).HasColumnName("AuthorEmail");
+                });
+
             builder.Property(x => x.CommentStatus)
                 .HasColumnName("CommentStatusId")
                 .HasConversion(new EnumToNumberConverter<CommentStatus, int>());

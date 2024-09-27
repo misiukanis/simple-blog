@@ -2,6 +2,7 @@
 using Blog.Domain.Core;
 using Blog.Domain.Entities.PostAggregate;
 using Blog.Domain.Repositories.Interfaces;
+using Blog.Domain.ValueObjects;
 using MediatR;
 
 namespace Blog.Application.Commands.CreateComment
@@ -21,7 +22,8 @@ namespace Blog.Application.Commands.CreateComment
                 throw new NotFoundException(nameof(Post), nameof(Post.PostId), request.PostId);
             }
 
-            post.AddComment(request.CommentId, request.Author, request.Content);
+            var author = new Author(request.AuthorName, request.AuthorEmail);
+            post.AddComment(request.CommentId, author, request.Content);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }

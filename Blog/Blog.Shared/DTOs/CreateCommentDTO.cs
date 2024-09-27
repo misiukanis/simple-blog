@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Blog.Shared.DTOs
 {
@@ -6,7 +7,14 @@ namespace Blog.Shared.DTOs
     {
         [Required]
         [StringLength(20)]
-        public string Author { get; set; } = default!;
+        [Display(Name = "Name")]
+        public string AuthorName { get; set; } = default!;
+
+        [Required]
+        [StringLength(100)]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string AuthorEmail { get; set; } = default!;
 
         [Required]
         [StringLength(100000)]

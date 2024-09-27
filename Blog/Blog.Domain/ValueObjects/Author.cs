@@ -2,14 +2,16 @@
 
 namespace Blog.Domain.ValueObjects
 {
-    public class ForbiddenWord : ValueObject
+    public class Author : ValueObject
     {
         public string Name { get; private set; }
+        public string Email { get; private set; }
 
 
-        public ForbiddenWord(string name)
+        public Author(string name, string email)
         {
             Name = name;
+            Email = email;
         }
     }
 }

@@ -18,7 +18,6 @@ namespace Blog.Infrastructure.Persistence
             ApplicationDbContext dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
             dbContext.Database.EnsureCreated();
 
-
             UserManager<ApplicationUser> userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
@@ -33,7 +32,6 @@ namespace Blog.Infrastructure.Persistence
                 await userManager.CreateAsync(user, UserPassword);
                 await userManager.AddToRoleAsync(user, RoleName);
             }
-
 
 
             if (await dbContext.Posts.AnyAsync())
@@ -69,26 +67,23 @@ namespace Blog.Infrastructure.Persistence
                 new Post(Guid.NewGuid(), "Title 24", "Test Introduction 24", "<strong>Test Content 24</strong>")
             };
 
-            posts[0].AddComment(Guid.NewGuid(), "Autor 1", "Comment 1");
-            posts[1].AddComment(Guid.NewGuid(), "Autor 2", "Comment 2");
-            posts[2].AddComment(Guid.NewGuid(), "Autor 3", "Comment 3");
-            posts[3].AddComment(Guid.NewGuid(), "Autor 4", "Comment 4");
-            posts[4].AddComment(Guid.NewGuid(), "Autor 5", "Comment 5");
-            posts[5].AddComment(Guid.NewGuid(), "Autor 6", "Comment 6");
-            posts[6].AddComment(Guid.NewGuid(), "Autor 7", "Comment 7");
-            posts[7].AddComment(Guid.NewGuid(), "Autor 8", "Comment 8");
-            posts[8].AddComment(Guid.NewGuid(), "Autor 9", "Comment 9");
-            posts[9].AddComment(Guid.NewGuid(), "Autor 10", "Comment 10");
-            posts[11].AddComment(Guid.NewGuid(), "Autor 11", "Comment 11");
-            posts[11].AddComment(Guid.NewGuid(), "Autor 12", "Comment 12");
-            posts[11].AddComment(Guid.NewGuid(), "Autor 13", "Comment 13");
-            posts[11].AddComment(Guid.NewGuid(), "Autor 14", "Comment 14");
-            posts[11].AddComment(Guid.NewGuid(), "Autor 15", "Comment 15");
+            posts[0].AddComment(Guid.NewGuid(), new Author("Autor 1", "author1@email.com"), "Comment 1");
+            posts[1].AddComment(Guid.NewGuid(), new Author("Autor 2", "author2@email.com"), "Comment 2");
+            posts[2].AddComment(Guid.NewGuid(), new Author("Autor 3", "author3@email.com"), "Comment 3");
+            posts[3].AddComment(Guid.NewGuid(), new Author("Autor 4", "author4@email.com"), "Comment 4");
+            posts[4].AddComment(Guid.NewGuid(), new Author("Autor 5", "author5@email.com"), "Comment 5");
+            posts[5].AddComment(Guid.NewGuid(), new Author("Autor 6", "author6@email.com"), "Comment 6");
+            posts[6].AddComment(Guid.NewGuid(), new Author("Autor 7", "author7@email.com"), "Comment 7");
+            posts[7].AddComment(Guid.NewGuid(), new Author("Autor 8", "author8@email.com"), "Comment 8");
+            posts[8].AddComment(Guid.NewGuid(), new Author("Autor 9", "author9@email.com"), "Comment 9");
+            posts[9].AddComment(Guid.NewGuid(), new Author("Autor 10", "author10@email.com"), "Comment 10");
+            posts[11].AddComment(Guid.NewGuid(), new Author("Autor 11", "author11@email.com"), "Comment 11");
+            posts[11].AddComment(Guid.NewGuid(), new Author("Autor 12", "author12@email.com"), "Comment 12");
+            posts[11].AddComment(Guid.NewGuid(), new Author("Autor 13", "author13@email.com"), "Comment 13");
+            posts[11].AddComment(Guid.NewGuid(), new Author("Autor 14", "author14@email.com"), "Comment 14");
+            posts[11].AddComment(Guid.NewGuid(), new Author("Autor 15", "author15@email.com"), "Comment 15");
 
             dbContext.Posts.AddRange(posts);
-
-            dbContext.ForbiddenWords.Add(new ForbiddenWord("test1"));
-            dbContext.ForbiddenWords.Add(new ForbiddenWord("test2"));
 
             await dbContext.SaveChangesAsync();
         }

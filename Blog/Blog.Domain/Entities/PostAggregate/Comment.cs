@@ -2,6 +2,7 @@
 using Blog.Domain.Enums;
 using Blog.Domain.Events;
 using Blog.Domain.Exceptions;
+using Blog.Domain.ValueObjects;
 
 namespace Blog.Domain.Entities.PostAggregate
 {
@@ -9,7 +10,7 @@ namespace Blog.Domain.Entities.PostAggregate
     {
         public Guid CommentId { get; private set; }
 
-        public string Author { get; private set; }
+        public Author Author { get; private set; }
 
         public string Content { get; private set; }
 
@@ -20,7 +21,11 @@ namespace Blog.Domain.Entities.PostAggregate
         public CommentStatus CommentStatus { get; private set; }
 
 
-        public Comment(Guid commentId, string author, string content)
+        private Comment() // for Entity Framework
+        {
+        }
+
+        public Comment(Guid commentId, Author author, string content)
         {
             CommentId = commentId;
             Author = author;
