@@ -34,9 +34,9 @@
 - CQRS
 
 ## Technologies
-- .NET 8.0
-- C# 12
-- Blazor WebAssembly
+- .NET 9.0
+- C# 13
+- Blazor Server
 - ASP.NET Core Web API
 - Entity Framework
 - Dapper ORM
@@ -50,8 +50,7 @@
 
 | Layer | Description |
 | ------ | ------ |
-| Blog | API |
-| Blog.Client | Blazor application |
+| Blog | API and Blazor application |
 | Blog.Application | Communication with Domain Layer |
 | Blog.Infrastructure | Persistence |
 | Blog.Domain | Core business logic |
