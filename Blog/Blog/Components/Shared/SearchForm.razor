@@ -1,0 +1,37 @@
+﻿@inject NavigationManager NavigationManager
+@implements IDisposable
+
+
+<div class="search-form">
+    <input type="text" @bind="SearchTerm" placeholder="Search" />
+    <a class="search-submit" @onclick="Search"></a>
+</div>
+
+
+@code {
+    public string SearchTerm = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        NavigationManager.LocationChanged += HandleLocationChanged;
+    }
+
+    private void Search()
+    {        
+        NavigationManager.NavigateTo($"posts/{SearchTerm}");
+    }
+
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        if (!e.Location.Contains($"/posts/{SearchTerm}"))
+        {
+            SearchTerm = string.Empty;
+            StateHasChanged(); // to notify the component that its state has changed and it should re-render
+        }
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
+    }
+}

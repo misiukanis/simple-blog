@@ -1,0 +1,136 @@
+﻿@page "/upload-image"
+@using Blog.HttpClients
+@using System.Net.Http.Headers
+@using Microsoft.AspNetCore.Authorization
+@using Blog.Shared
+@using Resources
+@attribute [Authorize]
+@inject BlogHttpClient BlogHttpClient
+@inject IJSRuntime JSRuntime
+
+
+<style>
+    .uploadingImageContainer {        
+        font-family: Arial, Verdana, Helvetica, sans-serif;
+        font-size: 12px;
+    }
+
+    .alignCenter {
+        text-align: center;
+    }
+
+    .imageLink {
+        font-size: 14px;
+    }
+
+    .inputFile {
+        margin: 0 auto;
+        width: 300px;
+    }
+
+    .textError {
+        color: Red;
+        font-weight: bold;
+    }
+
+    .textSuccess {
+        color: #006400;
+        font-weight: bold;
+    }
+
+    .copyImageButton {
+        border: 0;
+        outline: 0;
+        cursor: pointer;
+        color: white;
+        background-color: rgb(84, 105, 212);        
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 4px 8px;
+        display: inline-block;
+        min-height: 28px;
+        float: right;
+    }
+</style>
+
+
+<div class="uploadingImageContainer">
+    <div class="alignCenter">
+        <div class="textError @(showError ? "visible" : "hidden")">
+            @error
+            <br /><br />
+        </div>
+        <div class="textSuccess @(showSuccess ? "visible" : "hidden")">
+            @ValidationErrors.ImageUploadedSuccessfully
+            <br /><br />
+        </div>        
+    </div>
+
+    <div class="inputFile">
+        <InputFile OnChange="@SelectImage" accept=".png,.jpg,.jpeg" />
+    </div>
+
+    <br />
+
+    <div class="imageLink @(showSuccess ? "visible" : "hidden")">
+        <strong>Uploaded image url:</strong>
+        <br />
+        <label>@uploadedImageUrl</label>
+        <br /><br />
+        <button class="copyImageButton" @onclick="CopyImageUrl">Copy image url</button>        
+    </div>
+</div>
+
+
+@code {
+    private const long MaxFileSize = 1024 * 100; // 100 KB
+    private bool showError = false;
+    private bool showSuccess = false;
+    private string error = string.Empty;
+    private string uploadedImageUrl = string.Empty;
+
+    [CascadingParameter]
+    public BlazoredModalInstance BlazoredModal { get; set; }
+
+    private async Task SelectImage(InputFileChangeEventArgs e)
+    {
+        showError = false;
+        showSuccess = false;
+        error = string.Empty;
+        uploadedImageUrl = string.Empty;
+
+        if (e.File.Size > MaxFileSize)
+        {
+            showError = true;
+            error = ValidationErrors.FileIsTooBig;            
+            return;
+        }
+
+        try
+        {
+            var fileContent = new StreamContent(e.File.OpenReadStream(MaxFileSize));
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(e.File.ContentType);
+
+            using var content = new MultipartFormDataContent()
+            {
+                { fileContent, "file", e.File.Name }
+            };
+
+            var response = await BlogHttpClient.UploadImageAsync(content);
+            uploadedImageUrl = response.FilePath;
+            showSuccess = true;
+        }
+        catch(Exception ex)
+        {
+            showError = true;
+            error = ValidationErrors.ImageUploadFailed;
+        }
+    }
+
+    private async Task CopyImageUrl()
+    {
+        await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", uploadedImageUrl);
+        await BlazoredModal.CloseAsync();
+    }
+}

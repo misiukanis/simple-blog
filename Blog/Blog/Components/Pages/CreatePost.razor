@@ -1,0 +1,83 @@
+﻿@page "/create-post"
+@using Blog.HttpClients
+@using Blog.Models.Posts
+@using Blog.Shared.Constants
+@using Microsoft.AspNetCore.Authorization
+@using Blog.Shared
+@using Resources
+@using TinyMCE.Blazor
+@using Blog.TinyMce
+@attribute [Authorize]
+@inject NavigationManager NavigationManager
+@inject IToastService ToastService
+@inject BlogHttpClient BlogHttpClient
+@inject IConfiguration Configuration
+
+
+<PageTitle>Create post</PageTitle>
+
+
+<div class="independent-form">
+    <h2>Create post</h2>
+    
+    <p class="upload-image-button">
+        <button class="action-button" @onclick="@(() => Modal.Show<UploadImage>("Image upload", modalOptions))">Upload image</button>
+    </p>
+
+    <EditForm Model="@NewPost" OnValidSubmit="@HandleValidSubmit">
+        <div class="independent-form-errors">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+        </div>
+
+        <div class="editor-label">
+            <label>Title</label>
+        </div>
+        <div class="editor-field">
+            <InputText @bind-Value="NewPost.Title" style="width:400px" />
+        </div>
+
+        <div class="editor-label">
+            <label>Introduction</label>
+        </div>
+        <div class="editor-field">
+            <InputTextArea @bind-Value="NewPost.Introduction" rows="10" cols="70" />
+        </div>
+
+        <div class="editor-label">
+            <label>Content</label>
+        </div>          
+        <div class="editor-field-tinymce">
+            <Editor Field="() => NewPost.Content"
+                    @bind-Value="NewPost.Content"
+                    ApiKey="@Configuration[SettingConstants.TinyMceApiKey]"
+                    Conf="@TinyMceConfiguration.TinyMceConf" />
+        </div>
+        <br />
+
+        <div class="independent-form-submit">
+            <input type="submit" value="Save" />
+        </div>
+    </EditForm>
+</div>
+
+
+@code {
+    public CreatePostRequest NewPost = new CreatePostRequest();
+
+    [CascadingParameter]
+    public IModalService Modal { get; set; }
+
+    private ModalOptions modalOptions = new ModalOptions()
+    {
+        Size = ModalSize.Automatic
+    };
+
+    private async Task HandleValidSubmit()
+    {
+        var postId = await BlogHttpClient.CreatePostAsync(NewPost);
+
+        ToastService.ShowSuccess(Messages.PostSaved);
+        NavigationManager.NavigateTo($"edit-post/{postId}");
+    }
+}
