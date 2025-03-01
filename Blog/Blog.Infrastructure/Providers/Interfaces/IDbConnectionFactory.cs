@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace Blog.Application.Providers.Interfaces
+namespace Blog.Infrastructure.Providers.Interfaces
 {
     public interface IDbConnectionFactory
     {

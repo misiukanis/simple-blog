@@ -1,6 +1,6 @@
 ﻿using Blog.Domain.Enums;
 
-namespace Blog.Application.Queries.GetPostById
+namespace Blog.Application.DTOs
 {
     public class PostWithCommentsDTO
     {

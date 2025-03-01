@@ -1,4 +1,4 @@
-﻿using Blog.Application.Services.Interfaces;
+﻿using Blog.Application.Interfaces.Services;
 using MediatR;
 
 namespace Blog.Application.Commands.UploadImage

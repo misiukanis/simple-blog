@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Blog.Application.Queries.GetPaginatedPosts;
+using Blog.Application.DTOs;
 using Blog.Models.Pagination;
 using X.PagedList;
 

@@ -1,6 +1,6 @@
 ﻿using Blog.Application.Commands.UploadImage;
 
-namespace Blog.Application.Services.Interfaces
+namespace Blog.Application.Interfaces.Services
 {
     public interface IFileUploadingService
     {

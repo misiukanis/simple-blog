@@ -1,7 +1,11 @@
 ﻿using Blog.Application.Commands.ChangeCommentStatus;
+using Blog.Application.Commands.CreateComment;
+using Blog.Application.DTOs;
 using Blog.Application.Queries.GetCommentById;
 using Blog.Application.Queries.GetComments;
 using Blog.Domain.Enums;
+using Blog.Models.Comments;
+using Blog.Shared.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +50,20 @@ namespace Blog.Controllers
             }
 
             return Ok(commentDTO);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateComment(CreateCommentRequest commentRequest)
+        {
+            var commentCommand = new CreateCommentCommand(commentRequest.PostId, Guid.NewGuid(), commentRequest.AuthorName, commentRequest.AuthorEmail, commentRequest.Content);
+            await _mediator.Send(commentCommand);
+
+            return CreatedAtAction(nameof(GetCommentById), ControllerConstants.Comments,
+                new { commentId = commentCommand.CommentId }, commentCommand);
         }
 
         #if !DEBUG

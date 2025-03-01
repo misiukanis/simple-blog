@@ -1,5 +1,5 @@
 ﻿using Blog.Application.Commands.UploadImage;
-using Blog.Application.Services.Interfaces;
+using Blog.Application.Interfaces.Services;
 using Blog.Shared.Settings;
 using ImageMagick;
 using Microsoft.Extensions.Options;

@@ -1,4 +1,4 @@
-﻿using Blog.Application.Services.Interfaces;
+﻿using Blog.Application.Interfaces.Services;
 using Blog.Shared.Extensions;
 using Blog.Shared.Settings;
 using MailKit.Net.Smtp;

@@ -3,6 +3,7 @@ using Blog.Application.Commands.CreateComment;
 using Blog.Application.Commands.CreatePost;
 using Blog.Application.Commands.DeletePost;
 using Blog.Application.Commands.UpdatePost;
+using Blog.Application.DTOs;
 using Blog.Application.Queries.GetPaginatedPosts;
 using Blog.Application.Queries.GetPostById;
 using Blog.Models.Comments;
@@ -108,20 +109,6 @@ namespace Blog.Controllers
             await _mediator.Send(new DeletePostCommand(postId));
 
             return NoContent();
-        }
-
-        [HttpPost("{postId}/Comments")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateComment(Guid postId, CreateCommentRequest commentRequest)
-        {
-            var commentCommand = new CreateCommentCommand(postId, Guid.NewGuid(), commentRequest.AuthorName, commentRequest.AuthorEmail, commentRequest.Content);
-            await _mediator.Send(commentCommand);
-
-            return CreatedAtAction(nameof(CommentsController.GetCommentById), ControllerConstants.Comments,
-                new { commentId = commentCommand.CommentId }, commentCommand);
-        }
+        }        
     }
 }

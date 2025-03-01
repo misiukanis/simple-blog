@@ -1,4 +1,4 @@
-﻿namespace Blog.Application.Services.Interfaces
+﻿namespace Blog.Application.Interfaces.Services
 {
     public interface IEmailService
     {

@@ -1,4 +1,4 @@
-﻿namespace Blog.Domain.Core
+﻿namespace Blog.Domain.Interfaces.Persistence
 {
     public interface IUnitOfWork
     {

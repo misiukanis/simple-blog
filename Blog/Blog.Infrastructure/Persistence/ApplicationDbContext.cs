@@ -1,5 +1,6 @@
 ﻿using Blog.Domain.Core;
 using Blog.Domain.Entities.PostAggregate;
+using Blog.Domain.Interfaces.Persistence;
 using Blog.Infrastructure.Identity;
 using Blog.Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

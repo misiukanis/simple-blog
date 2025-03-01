@@ -1,21 +1,21 @@
 ﻿using Blog.Application.Exceptions;
-using Blog.Domain.Core;
 using Blog.Domain.Entities.PostAggregate;
-using Blog.Domain.Repositories.Interfaces;
+using Blog.Domain.Interfaces.Persistence;
+using Blog.Domain.Interfaces.Repositories;
 using MediatR;
 
 namespace Blog.Application.Commands.ChangeCommentStatus
 {
     public class ChangeCommentStatusCommandHandler(
-        IPostsRepository postsRepository, 
+        IPostRepository postRepository, 
         IUnitOfWork unitOfWork) : IRequestHandler<ChangeCommentStatusCommand>
     {
-        private readonly IPostsRepository _postsRepository = postsRepository;
+        private readonly IPostRepository _postRepository = postRepository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task Handle(ChangeCommentStatusCommand request, CancellationToken cancellationToken)
         {
-            var post = await _postsRepository.GetByCommentIdAsync(request.CommentId);
+            var post = await _postRepository.GetByCommentIdAsync(request.CommentId);
             if (post == null)
             {
                 throw new NotFoundException(nameof(Post), nameof(Comment.CommentId), request.CommentId);

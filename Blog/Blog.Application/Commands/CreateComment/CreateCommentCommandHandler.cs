@@ -1,22 +1,22 @@
 ﻿using Blog.Application.Exceptions;
-using Blog.Domain.Core;
 using Blog.Domain.Entities.PostAggregate;
-using Blog.Domain.Repositories.Interfaces;
+using Blog.Domain.Interfaces.Persistence;
+using Blog.Domain.Interfaces.Repositories;
 using Blog.Domain.ValueObjects;
 using MediatR;
 
 namespace Blog.Application.Commands.CreateComment
 {
     public class CreateCommentCommandHandler(
-        IPostsRepository postsRepository, 
+        IPostRepository postRepository, 
         IUnitOfWork unitOfWork) : IRequestHandler<CreateCommentCommand>
     {
-        private readonly IPostsRepository _postsRepository = postsRepository;
+        private readonly IPostRepository _postRepository = postRepository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task Handle(CreateCommentCommand request, CancellationToken cancellationToken)
         {
-            var post = await _postsRepository.GetByIdAsync(request.PostId);
+            var post = await _postRepository.GetByIdAsync(request.PostId);
             if (post == null)
             {
                 throw new NotFoundException(nameof(Post), nameof(Post.PostId), request.PostId);

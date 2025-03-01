@@ -1,6 +1,4 @@
-﻿using Blog.Application.Queries.GetComments;
-using Blog.Application.Queries.GetPaginatedPosts;
-using Blog.Application.Queries.GetPostById;
+﻿using Blog.Application.DTOs;
 using Blog.Domain.Enums;
 using Blog.Models.Comments;
 using Blog.Models.Emails;
@@ -86,7 +84,7 @@ namespace Blog.HttpClients
 
         public async Task CreateCommentAsync(Guid postId, CreateCommentRequest commentRequest)
         {
-            var response = await _httpClient.PostAsJsonAsync($"api/Posts/{postId}/Comments", commentRequest);
+            var response = await _httpClient.PostAsJsonAsync($"api/Comments", commentRequest);
             response.EnsureSuccessStatusCode();
         }
 

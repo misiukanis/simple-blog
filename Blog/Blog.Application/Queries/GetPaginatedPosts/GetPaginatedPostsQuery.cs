@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Blog.Application.DTOs;
+using MediatR;
 using X.PagedList;
 
 namespace Blog.Application.Queries.GetPaginatedPosts

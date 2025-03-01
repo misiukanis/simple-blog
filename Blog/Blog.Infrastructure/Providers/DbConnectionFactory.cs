@@ -1,4 +1,4 @@
-﻿using Blog.Application.Providers.Interfaces;
+﻿using Blog.Infrastructure.Providers.Interfaces;
 using Microsoft.Data.SqlClient;
 using System.Data;
 

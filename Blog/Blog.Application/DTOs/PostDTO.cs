@@ -1,4 +1,4 @@
-﻿namespace Blog.Application.Queries.GetPaginatedPosts
+﻿namespace Blog.Application.DTOs
 {
     public class PostDTO
     {

@@ -1,11 +1,11 @@
 ﻿using Blog.Domain.Entities.PostAggregate;
-using Blog.Domain.Repositories.Interfaces;
+using Blog.Domain.Interfaces.Repositories;
 using Blog.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Infrastructure.Repositories
 {
-    public class PostsRepository(ApplicationDbContext applicationDbContext) : IPostsRepository
+    public class PostRepository(ApplicationDbContext applicationDbContext) : IPostRepository
     {
         private readonly ApplicationDbContext _applicationDbContext = applicationDbContext;
 

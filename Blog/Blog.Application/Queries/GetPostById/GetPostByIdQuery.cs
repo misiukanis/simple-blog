@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Blog.Application.DTOs;
+using MediatR;
 
 namespace Blog.Application.Queries.GetPostById
 {

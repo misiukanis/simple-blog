@@ -1,8 +1,8 @@
 ﻿using Blog.Domain.Entities.PostAggregate;
 
-namespace Blog.Domain.Repositories.Interfaces
+namespace Blog.Domain.Interfaces.Repositories
 {
-    public interface IPostsRepository
+    public interface IPostRepository
     {
         Task<Post?> GetByIdAsync(Guid id);
         Task<Post?> GetByCommentIdAsync(Guid commentId);

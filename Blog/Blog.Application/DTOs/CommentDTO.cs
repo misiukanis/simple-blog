@@ -1,6 +1,6 @@
 ﻿using Blog.Domain.Enums;
 
-namespace Blog.Application.Queries.GetComments
+namespace Blog.Application.DTOs
 {
     public class CommentDTO
     {

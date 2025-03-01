@@ -1,31 +1,16 @@
-﻿using Blog.Application.Providers.Interfaces;
-using Dapper;
+﻿using Blog.Application.DTOs;
+using Blog.Application.Interfaces.ReadRepositories;
 using MediatR;
 
 namespace Blog.Application.Queries.GetComments
 {
-    public class GetCommentsQueryHandler(IDbConnectionFactory dbConnectionFactory) : IRequestHandler<GetCommentsQuery, IEnumerable<CommentDTO>>
+    public class GetCommentsQueryHandler(IReadCommentRepository readCommentRepository) : IRequestHandler<GetCommentsQuery, IEnumerable<CommentDTO>>
     {
-        private readonly IDbConnectionFactory _dbConnectionFactory = dbConnectionFactory;
+        private readonly IReadCommentRepository _readCommentRepository = readCommentRepository;
 
         public async Task<IEnumerable<CommentDTO>> Handle(GetCommentsQuery request, CancellationToken cancellationToken)
         {
-            using (var dbConnection = _dbConnectionFactory.CreateConnection())
-            {
-                var commentsDTO = await dbConnection.QueryAsync<CommentDTO>(@"
-                        SELECT 
-                            CommentId,
-                            PostId,
-                            AuthorName,
-                            AuthorEmail,
-                            Content,
-                            CommentStatusId AS CommentStatus,
-                            CreationDate
-                        FROM Comments
-                        ORDER BY CreationDate DESC");
-
-                return commentsDTO;
-            }
+            return await _readCommentRepository.GetAllAsync();
         }
     }
 }

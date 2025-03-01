@@ -1,9 +1,11 @@
-﻿using Blog.Application.Providers.Interfaces;
-using Blog.Application.Services.Interfaces;
-using Blog.Domain.Core;
-using Blog.Domain.Repositories.Interfaces;
+﻿using Blog.Application.Interfaces.ReadRepositories;
+using Blog.Application.Interfaces.Services;
+using Blog.Domain.Interfaces.Persistence;
+using Blog.Domain.Interfaces.Repositories;
 using Blog.Infrastructure.Persistence;
 using Blog.Infrastructure.Providers;
+using Blog.Infrastructure.Providers.Interfaces;
+using Blog.Infrastructure.ReadRepositories;
 using Blog.Infrastructure.Repositories;
 using Blog.Infrastructure.Services;
 using Blog.Infrastructure.Services.Interfaces;
@@ -24,9 +26,12 @@ namespace Blog.Infrastructure
 
             services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
-            services.AddScoped<IPostsRepository, PostsRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
 
             services.AddSingleton<IDbConnectionFactory>(provider => new DbConnectionFactory(connectionString));
+
+            services.AddScoped<IReadPostRepository, ReadPostRepository>();
+            services.AddScoped<IReadCommentRepository, ReadCommentRepository>();            
 
             services.AddScoped<IDomainEventsDispatcher, DomainEventsDispatcher>();
 
